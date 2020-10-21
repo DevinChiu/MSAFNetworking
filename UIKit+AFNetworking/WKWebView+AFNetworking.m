@@ -25,9 +25,9 @@
 
 #if TARGET_OS_IOS
 
-#import "AFHTTPSessionManager.h"
-#import "AFURLResponseSerialization.h"
-#import "AFURLRequestSerialization.h"
+#import "MSAFHTTPSessionManager.h"
+#import "MSAFURLResponseSerialization.h"
+#import "MSAFURLRequestSerialization.h"
 
 @interface WKWebView (_AFNetworking)
 @property (readwrite, nonatomic, strong, setter = af_setURLSessionTask:) NSURLSessionDataTask *af_URLSessionTask;
@@ -49,33 +49,33 @@
 
 @implementation WKWebView (AFNetworking)
 
-- (AFHTTPSessionManager *)sessionManager {
-    static AFHTTPSessionManager *_af_defaultHTTPSessionManager = nil;
+- (MSAFHTTPSessionManager *)sessionManager {
+    static MSAFHTTPSessionManager *_af_defaultHTTPSessionManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _af_defaultHTTPSessionManager = [[AFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-        _af_defaultHTTPSessionManager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        _af_defaultHTTPSessionManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        _af_defaultHTTPSessionManager = [[MSAFHTTPSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+        _af_defaultHTTPSessionManager.requestSerializer = [MSAFHTTPRequestSerializer serializer];
+        _af_defaultHTTPSessionManager.responseSerializer = [MSAFHTTPResponseSerializer serializer];
     });
     
     return objc_getAssociatedObject(self, @selector(sessionManager)) ?: _af_defaultHTTPSessionManager;
 }
 
-- (void)setSessionManager:(AFHTTPSessionManager *)sessionManager {
+- (void)setSessionManager:(MSAFHTTPSessionManager *)sessionManager {
     objc_setAssociatedObject(self, @selector(sessionManager), sessionManager, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
-    static AFHTTPResponseSerializer <AFURLResponseSerialization> *_af_defaultResponseSerializer = nil;
+- (MSAFHTTPResponseSerializer <MSAFURLResponseSerialization> *)responseSerializer {
+    static MSAFHTTPResponseSerializer <MSAFURLResponseSerialization> *_af_defaultResponseSerializer = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _af_defaultResponseSerializer = [AFHTTPResponseSerializer serializer];
+        _af_defaultResponseSerializer = [MSAFHTTPResponseSerializer serializer];
     });
     
     return objc_getAssociatedObject(self, @selector(responseSerializer)) ?: _af_defaultResponseSerializer;
 }
 
-- (void)setResponseSerializer:(AFHTTPResponseSerializer<AFURLResponseSerialization> *)responseSerializer {
+- (void)setResponseSerializer:(MSAFHTTPResponseSerializer<MSAFURLResponseSerialization> *)responseSerializer {
     objc_setAssociatedObject(self, @selector(responseSerializer), responseSerializer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 

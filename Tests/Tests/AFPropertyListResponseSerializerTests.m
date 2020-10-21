@@ -21,7 +21,7 @@
 
 #import "AFTestCase.h"
 
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 @interface AFPropertyListResponseSerializerTests : AFTestCase
 @property (nonatomic, strong) AFPropertyListResponseSerializer *responseSerializer;

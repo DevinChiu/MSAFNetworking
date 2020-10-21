@@ -22,12 +22,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "AFURLResponseSerialization.h"
-#import "AFURLRequestSerialization.h"
-#import "AFSecurityPolicy.h"
-#import "AFCompatibilityMacros.h"
+#import "MSAFURLResponseSerialization.h"
+#import "MSAFURLRequestSerialization.h"
+#import "MSAFSecurityPolicy.h"
+#import "MSAFCompatibilityMacros.h"
 #if !TARGET_OS_WATCH
-#import "AFNetworkReachabilityManager.h"
+#import "MSAFNetworkReachabilityManager.h"
 #endif
 
 /**
@@ -105,7 +105,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @warning `responseSerializer` must not be `nil`.
  */
-@property (nonatomic, strong) id <AFURLResponseSerialization> responseSerializer;
+@property (nonatomic, strong) id <MSAFURLResponseSerialization> responseSerializer;
 
 ///-------------------------------
 /// @name Managing Security Policy
@@ -114,7 +114,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The security policy used by created session to evaluate server trust for secure connections. `AFURLSessionManager` uses the `defaultPolicy` unless otherwise specified.
  */
-@property (nonatomic, strong) AFSecurityPolicy *securityPolicy;
+@property (nonatomic, strong) MSAFSecurityPolicy *securityPolicy;
 
 #if !TARGET_OS_WATCH
 ///--------------------------------------
@@ -124,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The network reachability manager. `AFURLSessionManager` uses the `sharedManager` by default.
  */
-@property (readwrite, nonatomic, strong) AFNetworkReachabilityManager *reachabilityManager;
+@property (readwrite, nonatomic, strong) MSAFNetworkReachabilityManager *reachabilityManager;
 #endif
 
 ///----------------------------
@@ -380,8 +380,8 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param block A block object to be executed when a session task is completed. The block has no return value, and takes three arguments: the session, the task, and any metrics that were collected in the process of executing the task.
  */
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
-- (void)setTaskDidFinishCollectingMetricsBlock:(nullable void (^)(NSURLSession *session, NSURLSessionTask *task, NSURLSessionTaskMetrics * _Nullable metrics))block AF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
+- (void)setTaskDidFinishCollectingMetricsBlock:(nullable void (^)(NSURLSession *session, NSURLSessionTask *task, NSURLSessionTaskMetrics * _Nullable metrics))block MSAF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
 #endif
 ///-------------------------------------------
 /// @name Setting Data Task Delegate Callbacks
@@ -420,7 +420,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param block A block object to be executed once all messages enqueued for a session have been delivered. The block has no return value and takes a single argument: the session.
  */
-- (void)setDidFinishEventsForBackgroundURLSessionBlock:(nullable void (^)(NSURLSession *session))block AF_API_UNAVAILABLE(macos);
+- (void)setDidFinishEventsForBackgroundURLSessionBlock:(nullable void (^)(NSURLSession *session))block MSAF_API_UNAVAILABLE(macos);
 
 ///-----------------------------------------------
 /// @name Setting Download Task Delegate Callbacks
@@ -456,61 +456,61 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Posted when a task resumes.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidResumeNotification;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidResumeNotification;
 
 /**
  Posted when a task finishes executing. Includes a userInfo dictionary with additional information about the task.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteNotification;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidCompleteNotification;
 
 /**
  Posted when a task suspends its execution.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidSuspendNotification;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidSuspendNotification;
 
 /**
  Posted when a session is invalidated.
  */
-FOUNDATION_EXPORT NSString * const AFURLSessionDidInvalidateNotification;
+FOUNDATION_EXPORT NSString * const MSAFURLSessionDidInvalidateNotification;
 
 /**
  Posted when a session download task finished moving the temporary download file to a specified destination successfully.
  */
-FOUNDATION_EXPORT NSString * const AFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification;
+FOUNDATION_EXPORT NSString * const MSAFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification;
 
 /**
  Posted when a session download task encountered an error when moving the temporary download file to a specified destination.
  */
-FOUNDATION_EXPORT NSString * const AFURLSessionDownloadTaskDidFailToMoveFileNotification;
+FOUNDATION_EXPORT NSString * const MSAFURLSessionDownloadTaskDidFailToMoveFileNotification;
 
 /**
  The raw response data of the task. Included in the userInfo dictionary of the `AFNetworkingTaskDidCompleteNotification` if response data exists for the task.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteResponseDataKey;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidCompleteResponseDataKey;
 
 /**
  The serialized response object of the task. Included in the userInfo dictionary of the `AFNetworkingTaskDidCompleteNotification` if the response was serialized.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteSerializedResponseKey;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidCompleteSerializedResponseKey;
 
 /**
  The response serializer used to serialize the response. Included in the userInfo dictionary of the `AFNetworkingTaskDidCompleteNotification` if the task has an associated response serializer.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteResponseSerializerKey;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidCompleteResponseSerializerKey;
 
 /**
  The file path associated with the download task. Included in the userInfo dictionary of the `AFNetworkingTaskDidCompleteNotification` if an the response data has been stored directly to disk.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteAssetPathKey;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidCompleteAssetPathKey;
 
 /**
  Any error associated with the task, or the serialization of the response. Included in the userInfo dictionary of the `AFNetworkingTaskDidCompleteNotification` if an error exists.
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteErrorKey;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidCompleteErrorKey;
 
 /**
  The session task metrics taken from the download task. Included in the userInfo dictionary of the `AFNetworkingTaskDidCompleteSessionTaskMetrics`
  */
-FOUNDATION_EXPORT NSString * const AFNetworkingTaskDidCompleteSessionTaskMetrics;
+FOUNDATION_EXPORT NSString * const MSAFNetworkingTaskDidCompleteSessionTaskMetrics;
 
 NS_ASSUME_NONNULL_END

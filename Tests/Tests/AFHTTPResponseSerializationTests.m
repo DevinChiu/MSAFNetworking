@@ -21,17 +21,17 @@
 
 #import "AFTestCase.h"
 
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 @interface AFHTTPResponseSerializationTests : AFTestCase
-@property (nonatomic, strong) AFHTTPResponseSerializer *responseSerializer;
+@property (nonatomic, strong) MSAFHTTPResponseSerializer *responseSerializer;
 @end
 
 @implementation AFHTTPResponseSerializationTests
 
 - (void)setUp {
     [super setUp];
-    self.responseSerializer = [AFHTTPResponseSerializer serializer];
+    self.responseSerializer = [MSAFHTTPResponseSerializer serializer];
 }
 
 #pragma mark -
@@ -103,7 +103,7 @@
 }
 
 - (void)testCanBeCopied {
-    AFHTTPResponseSerializer *copiedSerializer = [self.responseSerializer copy];
+    MSAFHTTPResponseSerializer *copiedSerializer = [self.responseSerializer copy];
     XCTAssertNotNil(copiedSerializer);
     XCTAssertNotEqual(copiedSerializer, self.responseSerializer);
     XCTAssertTrue(copiedSerializer.acceptableContentTypes.count == self.responseSerializer.acceptableContentTypes.count);
@@ -111,7 +111,7 @@
 }
 
 - (void)testSupportsSecureCoding {
-    XCTAssertTrue([AFHTTPResponseSerializer supportsSecureCoding]);
+    XCTAssertTrue([MSAFHTTPResponseSerializer supportsSecureCoding]);
 }
 
 @end

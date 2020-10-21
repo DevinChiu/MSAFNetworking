@@ -21,8 +21,8 @@
 
 #import "AFTestCase.h"
 
-#import "AFURLRequestSerialization.h"
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLRequestSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 static NSData * AFJSONTestData() {
     return [NSJSONSerialization dataWithJSONObject:@{@"foo": @"bar"} options:(NSJSONWritingOptions)0 error:nil];

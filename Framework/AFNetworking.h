@@ -35,17 +35,17 @@ FOUNDATION_EXPORT const unsigned char AFNetworkingVersionString[];
 #ifndef _AFNETWORKING_
 #define _AFNETWORKING_
 
-#import <AFNetworking/AFURLRequestSerialization.h>
-#import <AFNetworking/AFURLResponseSerialization.h>
-#import <AFNetworking/AFSecurityPolicy.h>
-#import <AFNetworking/AFCompatibilityMacros.h>
+#import <AFNetworking/MSAFURLRequestSerialization.h>
+#import <AFNetworking/MSAFURLResponseSerialization.h>
+#import <AFNetworking/MSAFSecurityPolicy.h>
+#import <AFNetworking/MSAFCompatibilityMacros.h>
 
 #if !TARGET_OS_WATCH
-#import <AFNetworking/AFNetworkReachabilityManager.h>
+#import <AFNetworking/MSAFNetworkReachabilityManager.h>
 #endif
 
-#import <AFNetworking/AFURLSessionManager.h>
-#import <AFNetworking/AFHTTPSessionManager.h>
+#import <AFNetworking/MSAFURLSessionManager.h>
+#import <AFNetworking/MSAFHTTPSessionManager.h>
 
 #if TARGET_OS_IOS || TARGET_OS_TV
 #import <AFNetworking/AFAutoPurgingImageCache.h>

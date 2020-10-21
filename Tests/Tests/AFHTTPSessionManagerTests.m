@@ -21,14 +21,14 @@
 
 #import "AFTestCase.h"
 
-#import "AFHTTPSessionManager.h"
-#import "AFSecurityPolicy.h"
+#import "MSAFHTTPSessionManager.h"
+#import "MSAFSecurityPolicy.h"
 
 @interface AFHTTPSessionManagerTests : AFTestCase
-@property (readwrite, nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (readwrite, nonatomic, strong) MSAFHTTPSessionManager *sessionManager;
 @end
 
-@interface AFURLSessionManager (Testing)
+@interface MSAFURLSessionManager (Testing)
 
 - (nonnull NSError *)serverTrustErrorForServerTrust:(SecTrustRef)serverTrust url:(NSURL *)url;
 
@@ -38,7 +38,7 @@
 
 - (void)setUp {
     [super setUp];
-    self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:self.baseURL];
+    self.sessionManager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:self.baseURL];
 }
 
 - (void)tearDown {
@@ -49,7 +49,7 @@
 
 #pragma mark - init
 - (void)testSharedManagerIsNotEqualToInitedManager {
-    XCTAssertFalse([[AFHTTPSessionManager manager] isEqual:self.sessionManager]);
+    XCTAssertFalse([[MSAFHTTPSessionManager manager] isEqual:self.sessionManager]);
 }
 
 #pragma mark - misc
@@ -236,7 +236,7 @@
 #pragma mark - NSCoding
 
 - (void)testSupportsSecureCoding {
-    XCTAssertTrue([AFHTTPSessionManager supportsSecureCoding]);
+    XCTAssertTrue([MSAFHTTPSessionManager supportsSecureCoding]);
 }
 
 - (void)testCanBeEncoded {
@@ -246,7 +246,7 @@
 
 - (void)testCanBeDecoded {
     NSData *data = [self archivedDataWithRootObject:self.sessionManager];
-    AFHTTPSessionManager *newManager = [self unarchivedObjectOfClass:[AFHTTPSessionManager class] fromData:data];;
+    MSAFHTTPSessionManager *newManager = [self unarchivedObjectOfClass:[MSAFHTTPSessionManager class] fromData:data];;
     XCTAssertNotNil(newManager.securityPolicy);
     XCTAssertNotNil(newManager.requestSerializer);
     XCTAssertNotNil(newManager.responseSerializer);
@@ -258,7 +258,7 @@
 #pragma mark - NSCopying 
 
 - (void)testCanBeCopied {
-    AFHTTPSessionManager *copyManager = [self.sessionManager copy];
+    MSAFHTTPSessionManager *copyManager = [self.sessionManager copy];
     XCTAssertNotNil(copyManager);
 }
 
@@ -314,7 +314,7 @@
      POST:@"post"
      parameters:nil
      headers:nil
-     constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+     constructingBodyWithBlock:^(id<MSAFMultipartFormData>  _Nonnull formData) {
          [formData appendPartWithFileData:[payload dataUsingEncoding:NSUTF8StringEncoding] name:@"AFNetworking" fileName:@"AFNetworking" mimeType:@"text/html"];
      }
      progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -431,7 +431,7 @@
      POST:@"post"
      parameters:@{@"key":@"value"}
      headers:@{@"field":@"value"}
-     constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+     constructingBodyWithBlock:^(id<MSAFMultipartFormData>  _Nonnull formData) {
          [formData appendPartWithFileData:[@"Data" dataUsingEncoding:NSUTF8StringEncoding]
                                      name:@"DataName"
                                  fileName:@"DataFileName"
@@ -522,50 +522,50 @@
 # pragma mark - Security Policy
 
 - (void)testValidSecureNoPinningSecurityPolicy {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://example.com"]];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://example.com"]];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
     XCTAssertNoThrow(manager.securityPolicy = securityPolicy);
 }
 
 - (void)testValidInsecureNoPinningSecurityPolicy {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://example.com"]];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://example.com"]];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
     XCTAssertNoThrow(manager.securityPolicy = securityPolicy);
 }
 
 - (void)testValidCertificatePinningSecurityPolicy {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://example.com"]];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://example.com"]];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     XCTAssertNoThrow(manager.securityPolicy = securityPolicy);
 }
 
 - (void)testInvalidCertificatePinningSecurityPolicy {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://example.com"]];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://example.com"]];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     XCTAssertThrowsSpecificNamed(manager.securityPolicy = securityPolicy, NSException, @"Invalid Security Policy");
 }
 
 - (void)testValidPublicKeyPinningSecurityPolicy {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://example.com"]];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://example.com"]];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
     XCTAssertNoThrow(manager.securityPolicy = securityPolicy);
 }
 
 - (void)testInvalidPublicKeyPinningSecurityPolicy {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://example.com"]];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"http://example.com"]];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
     XCTAssertThrowsSpecificNamed(manager.securityPolicy = securityPolicy, NSException, @"Invalid Security Policy");
 }
 
 - (void)testInvalidCertificatePinningSecurityPolicyWithoutBaseURL {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] init];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     XCTAssertThrowsSpecificNamed(manager.securityPolicy = securityPolicy, NSException, @"Invalid Security Policy");
 }
 
 - (void)testInvalidPublicKeyPinningSecurityPolicyWithoutBaseURL {
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] init];
-    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] init];
+    MSAFSecurityPolicy *securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey];
     XCTAssertThrowsSpecificNamed(manager.securityPolicy = securityPolicy, NSException, @"Invalid Security Policy");
 }
 
@@ -575,9 +575,9 @@
     __weak XCTestExpectation *expectation = [self expectationWithDescription:@"Request should fail with untrusted certificate error"];
     NSURL *googleCertificateURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"google.com" withExtension:@"cer"];
     NSData *googleCertificateData = [NSData dataWithContentsOfURL:googleCertificateURL];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://apple.com/"]];
-    [manager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
-    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate withPinnedCertificates:[NSSet setWithObject:googleCertificateData]];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://apple.com/"]];
+    [manager setResponseSerializer:[MSAFHTTPResponseSerializer serializer]];
+    manager.securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate withPinnedCertificates:[NSSet setWithObject:googleCertificateData]];
     [manager
      GET:@""
      parameters:nil
@@ -601,9 +601,9 @@
     __weak XCTestExpectation *expectation = [self expectationWithDescription:@"Request should fail with untrusted certificate error"];
     NSURL *googleCertificateURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"google.com" withExtension:@"cer"];
     NSData *googleCertificateData = [NSData dataWithContentsOfURL:googleCertificateURL];
-    AFHTTPSessionManager *manager = [[AFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://apple.com/"]];
-    [manager setResponseSerializer:[AFHTTPResponseSerializer serializer]];
-    manager.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey withPinnedCertificates:[NSSet setWithObject:googleCertificateData]];
+    MSAFHTTPSessionManager *manager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:@"https://apple.com/"]];
+    [manager setResponseSerializer:[MSAFHTTPResponseSerializer serializer]];
+    manager.securityPolicy = [MSAFSecurityPolicy policyWithPinningMode:AFSSLPinningModePublicKey withPinnedCertificates:[NSSet setWithObject:googleCertificateData]];
     [manager
      GET:@""
      parameters:nil
@@ -627,7 +627,7 @@
 
 - (void)testAuthenticationChallengeHandlerCredentialResult {
     __weak XCTestExpectation *expectation = [self expectationWithDescription:@"Request succeed with provided credentials"];
-    self.sessionManager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    self.sessionManager.responseSerializer = [MSAFHTTPResponseSerializer serializer];
     [self.sessionManager setAuthenticationChallengeHandler:^id _Nonnull(NSURLSession * _Nonnull session, NSURLSessionTask * _Nonnull task, NSURLAuthenticationChallenge * _Nonnull challenge, void (^ _Nonnull completionHandler)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable)) {
         if ([challenge.protectionSpace.realm isEqualToString:@"Fake Realm"]) {
             return [NSURLCredential credentialWithUser:@"user" password:@"passwd" persistence:NSURLCredentialPersistenceNone];

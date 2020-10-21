@@ -21,8 +21,8 @@
 
 #import "MSAFHTTPSessionManager.h"
 
-#import "AFURLRequestSerialization.h"
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLRequestSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 #import <Availability.h>
 #import <TargetConditionals.h>
@@ -78,7 +78,7 @@
 
     self.baseURL = url;
 
-    self.requestSerializer = [AFHTTPRequestSerializer serializer];
+    self.requestSerializer = [MSAFHTTPRequestSerializer serializer];
     self.responseSerializer = [AFJSONResponseSerializer serializer];
 
     return self;
@@ -86,13 +86,13 @@
 
 #pragma mark -
 
-- (void)setRequestSerializer:(AFHTTPRequestSerializer <AFURLRequestSerialization> *)requestSerializer {
+- (void)setRequestSerializer:(MSAFHTTPRequestSerializer <AFURLRequestSerialization> *)requestSerializer {
     NSParameterAssert(requestSerializer);
 
     _requestSerializer = requestSerializer;
 }
 
-- (void)setResponseSerializer:(AFHTTPResponseSerializer <AFURLResponseSerialization> *)responseSerializer {
+- (void)setResponseSerializer:(MSAFHTTPResponseSerializer <MSAFURLResponseSerialization> *)responseSerializer {
     NSParameterAssert(responseSerializer);
 
     [super setResponseSerializer:responseSerializer];
@@ -100,7 +100,7 @@
 
 @dynamic securityPolicy;
 
-- (void)setSecurityPolicy:(AFSecurityPolicy *)securityPolicy {
+- (void)setSecurityPolicy:(MSAFSecurityPolicy *)securityPolicy {
     if (securityPolicy.SSLPinningMode != AFSSLPinningModeNone && ![self.baseURL.scheme isEqualToString:@"https"]) {
         NSString *pinningMode = @"Unknown Pinning Mode";
         switch (securityPolicy.SSLPinningMode) {
@@ -173,7 +173,7 @@
 - (NSURLSessionDataTask *)POST:(NSString *)URLString
                     parameters:(nullable id)parameters
                        headers:(nullable NSDictionary<NSString *,NSString *> *)headers
-     constructingBodyWithBlock:(nullable void (^)(id<AFMultipartFormData> _Nonnull))block
+     constructingBodyWithBlock:(nullable void (^)(id<MSAFMultipartFormData> _Nonnull))block
                       progress:(nullable void (^)(NSProgress * _Nonnull))uploadProgress
                        success:(nullable void (^)(NSURLSessionDataTask * _Nonnull, id _Nullable))success failure:(void (^)(NSURLSessionDataTask * _Nullable, NSError * _Nonnull))failure
 {
@@ -319,9 +319,9 @@
         return nil;
     }
 
-    self.requestSerializer = [decoder decodeObjectOfClass:[AFHTTPRequestSerializer class] forKey:NSStringFromSelector(@selector(requestSerializer))];
-    self.responseSerializer = [decoder decodeObjectOfClass:[AFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
-    AFSecurityPolicy *decodedPolicy = [decoder decodeObjectOfClass:[AFSecurityPolicy class] forKey:NSStringFromSelector(@selector(securityPolicy))];
+    self.requestSerializer = [decoder decodeObjectOfClass:[MSAFHTTPRequestSerializer class] forKey:NSStringFromSelector(@selector(requestSerializer))];
+    self.responseSerializer = [decoder decodeObjectOfClass:[MSAFHTTPResponseSerializer class] forKey:NSStringFromSelector(@selector(responseSerializer))];
+    MSAFSecurityPolicy *decodedPolicy = [decoder decodeObjectOfClass:[MSAFSecurityPolicy class] forKey:NSStringFromSelector(@selector(securityPolicy))];
     if (decodedPolicy) {
         self.securityPolicy = decodedPolicy;
     }

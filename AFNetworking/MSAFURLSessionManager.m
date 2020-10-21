@@ -42,21 +42,21 @@ static dispatch_group_t url_session_manager_completion_group() {
     return af_url_session_manager_completion_group;
 }
 
-NSString * const AFNetworkingTaskDidResumeNotification = @"com.alamofire.networking.task.resume";
-NSString * const AFNetworkingTaskDidCompleteNotification = @"com.alamofire.networking.task.complete";
-NSString * const AFNetworkingTaskDidSuspendNotification = @"com.alamofire.networking.task.suspend";
-NSString * const AFURLSessionDidInvalidateNotification = @"com.alamofire.networking.session.invalidate";
-NSString * const AFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification = @"com.alamofire.networking.session.download.file-manager-succeed";
-NSString * const AFURLSessionDownloadTaskDidFailToMoveFileNotification = @"com.alamofire.networking.session.download.file-manager-error";
+NSString * const MSAFNetworkingTaskDidResumeNotification = @"com.msxf.networking.task.resume";
+NSString * const MSAFNetworkingTaskDidCompleteNotification = @"com.msxf.networking.task.complete";
+NSString * const MSAFNetworkingTaskDidSuspendNotification = @"com.msxf.networking.task.suspend";
+NSString * const MSAFURLSessionDidInvalidateNotification = @"com.msxf.networking.session.invalidate";
+NSString * const MSAFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification = @"com.msxf.networking.session.download.file-manager-succeed";
+NSString * const MSAFURLSessionDownloadTaskDidFailToMoveFileNotification = @"com.msxf.networking.session.download.file-manager-error";
 
-NSString * const AFNetworkingTaskDidCompleteSerializedResponseKey = @"com.alamofire.networking.task.complete.serializedresponse";
-NSString * const AFNetworkingTaskDidCompleteResponseSerializerKey = @"com.alamofire.networking.task.complete.responseserializer";
-NSString * const AFNetworkingTaskDidCompleteResponseDataKey = @"com.alamofire.networking.complete.finish.responsedata";
-NSString * const AFNetworkingTaskDidCompleteErrorKey = @"com.alamofire.networking.task.complete.error";
-NSString * const AFNetworkingTaskDidCompleteAssetPathKey = @"com.alamofire.networking.task.complete.assetpath";
-NSString * const AFNetworkingTaskDidCompleteSessionTaskMetrics = @"com.alamofire.networking.complete.sessiontaskmetrics";
+NSString * const MSAFNetworkingTaskDidCompleteSerializedResponseKey = @"com.msxf.networking.task.complete.serializedresponse";
+NSString * const MSAFNetworkingTaskDidCompleteResponseSerializerKey = @"com.msxf.networking.task.complete.responseserializer";
+NSString * const MSAFNetworkingTaskDidCompleteResponseDataKey = @"com.msxf.networking.complete.finish.responsedata";
+NSString * const MSAFNetworkingTaskDidCompleteErrorKey = @"com.msxf.networking.task.complete.error";
+NSString * const MSAFNetworkingTaskDidCompleteAssetPathKey = @"com.msxf.networking.task.complete.assetpath";
+NSString * const MSAFNetworkingTaskDidCompleteSessionTaskMetrics = @"com.msxf.networking.complete.sessiontaskmetrics";
 
-static NSString * const AFURLSessionManagerLockName = @"com.alamofire.networking.session.manager.lock";
+static NSString * const MSAFURLSessionManagerLockName = @"com.msxf.networking.session.manager.lock";
 
 typedef void (^AFURLSessionDidBecomeInvalidBlock)(NSURLSession *session, NSError *error);
 typedef NSURLSessionAuthChallengeDisposition (^AFURLSessionDidReceiveAuthenticationChallengeBlock)(NSURLSession *session, NSURLAuthenticationChallenge *challenge, NSURLCredential * __autoreleasing *credential);
@@ -69,8 +69,8 @@ typedef void (^AFURLSessionDidFinishEventsForBackgroundURLSessionBlock)(NSURLSes
 typedef NSInputStream * (^AFURLSessionTaskNeedNewBodyStreamBlock)(NSURLSession *session, NSURLSessionTask *task);
 typedef void (^AFURLSessionTaskDidSendBodyDataBlock)(NSURLSession *session, NSURLSessionTask *task, int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend);
 typedef void (^AFURLSessionTaskDidCompleteBlock)(NSURLSession *session, NSURLSessionTask *task, NSError *error);
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
-typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *session, NSURLSessionTask *task, NSURLSessionTaskMetrics * metrics) AF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
+typedef void (^AFURLSessionTaskDidFinishCollectingMetricsBlock)(NSURLSession *session, NSURLSessionTask *task, NSURLSessionTaskMetrics * metrics) MSAF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
 #endif
 
 typedef NSURLSessionResponseDisposition (^AFURLSessionDataTaskDidReceiveResponseBlock)(NSURLSession *session, NSURLSessionDataTask *dataTask, NSURLResponse *response);
@@ -94,8 +94,8 @@ typedef void (^AFURLSessionTaskCompletionHandler)(NSURLResponse *response, id re
 @property (nonatomic, strong) NSProgress *uploadProgress;
 @property (nonatomic, strong) NSProgress *downloadProgress;
 @property (nonatomic, copy) NSURL *downloadFileURL;
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
-@property (nonatomic, strong) NSURLSessionTaskMetrics *sessionTaskMetrics AF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
+@property (nonatomic, strong) NSURLSessionTaskMetrics *sessionTaskMetrics MSAF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
 #endif
 @property (nonatomic, copy) AFURLSessionDownloadTaskDidFinishDownloadingBlock downloadTaskDidFinishDownloading;
 @property (nonatomic, copy) AFURLSessionTaskProgressBlock uploadProgressBlock;
@@ -127,7 +127,7 @@ typedef void (^AFURLSessionTaskCompletionHandler)(NSURLResponse *response, id re
         progress.pausingHandler = ^{
             [weakTask suspend];
         };
-#if AF_CAN_USE_AT_AVAILABLE
+#if MSAF_CAN_USE_AT_AVAILABLE
         if (@available(macOS 10.11, *))
 #else
         if ([progress respondsToSelector:@selector(setResumingHandler:)])
@@ -180,7 +180,7 @@ didCompleteWithError:(NSError *)error
     __block id responseObject = nil;
 
     NSMutableDictionary *userInfo = [NSMutableDictionary dictionary];
-    userInfo[AFNetworkingTaskDidCompleteResponseSerializerKey] = manager.responseSerializer;
+    userInfo[MSAFNetworkingTaskDidCompleteResponseSerializerKey] = manager.responseSerializer;
 
     //Performance Improvement from #2672
     NSData *data = nil;
@@ -190,22 +190,22 @@ didCompleteWithError:(NSError *)error
         self.mutableData = nil;
     }
 
-#if AF_CAN_USE_AT_AVAILABLE && AF_CAN_INCLUDE_SESSION_TASK_METRICS
+#if MSAF_CAN_USE_AT_AVAILABLE && MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
     if (@available(iOS 10, macOS 10.12, watchOS 3, tvOS 10, *)) {
         if (self.sessionTaskMetrics) {
-            userInfo[AFNetworkingTaskDidCompleteSessionTaskMetrics] = self.sessionTaskMetrics;
+            userInfo[MSAFNetworkingTaskDidCompleteSessionTaskMetrics] = self.sessionTaskMetrics;
         }
     }
 #endif
 
     if (self.downloadFileURL) {
-        userInfo[AFNetworkingTaskDidCompleteAssetPathKey] = self.downloadFileURL;
+        userInfo[MSAFNetworkingTaskDidCompleteAssetPathKey] = self.downloadFileURL;
     } else if (data) {
-        userInfo[AFNetworkingTaskDidCompleteResponseDataKey] = data;
+        userInfo[MSAFNetworkingTaskDidCompleteResponseDataKey] = data;
     }
 
     if (error) {
-        userInfo[AFNetworkingTaskDidCompleteErrorKey] = error;
+        userInfo[MSAFNetworkingTaskDidCompleteErrorKey] = error;
 
         dispatch_group_async(manager.completionGroup ?: url_session_manager_completion_group(), manager.completionQueue ?: dispatch_get_main_queue(), ^{
             if (self.completionHandler) {
@@ -213,7 +213,7 @@ didCompleteWithError:(NSError *)error
             }
 
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidCompleteNotification object:task userInfo:userInfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MSAFNetworkingTaskDidCompleteNotification object:task userInfo:userInfo];
             });
         });
     } else {
@@ -226,11 +226,11 @@ didCompleteWithError:(NSError *)error
             }
 
             if (responseObject) {
-                userInfo[AFNetworkingTaskDidCompleteSerializedResponseKey] = responseObject;
+                userInfo[MSAFNetworkingTaskDidCompleteSerializedResponseKey] = responseObject;
             }
 
             if (serializationError) {
-                userInfo[AFNetworkingTaskDidCompleteErrorKey] = serializationError;
+                userInfo[MSAFNetworkingTaskDidCompleteErrorKey] = serializationError;
             }
 
             dispatch_group_async(manager.completionGroup ?: url_session_manager_completion_group(), manager.completionQueue ?: dispatch_get_main_queue(), ^{
@@ -239,17 +239,17 @@ didCompleteWithError:(NSError *)error
                 }
 
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidCompleteNotification object:task userInfo:userInfo];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:MSAFNetworkingTaskDidCompleteNotification object:task userInfo:userInfo];
                 });
             });
         });
     }
 }
 
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
 - (void)URLSession:(NSURLSession *)session
               task:(NSURLSessionTask *)task
-didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics AF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10)) {
+didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics MSAF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10)) {
     self.sessionTaskMetrics = metrics;
 }
 #endif
@@ -306,9 +306,9 @@ didFinishDownloadingToURL:(NSURL *)location
             NSError *fileManagerError = nil;
 
             if (![[NSFileManager defaultManager] moveItemAtURL:location toURL:self.downloadFileURL error:&fileManagerError]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:AFURLSessionDownloadTaskDidFailToMoveFileNotification object:downloadTask userInfo:fileManagerError.userInfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MSAFURLSessionDownloadTaskDidFailToMoveFileNotification object:downloadTask userInfo:fileManagerError.userInfo];
             } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:AFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification object:downloadTask userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MSAFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification object:downloadTask userInfo:nil];
             }
         }
     }
@@ -454,14 +454,14 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
 @property (readwrite, nonatomic, strong) NSLock *lock;
 @property (readwrite, nonatomic, copy) AFURLSessionDidBecomeInvalidBlock sessionDidBecomeInvalid;
 @property (readwrite, nonatomic, copy) AFURLSessionDidReceiveAuthenticationChallengeBlock sessionDidReceiveAuthenticationChallenge;
-@property (readwrite, nonatomic, copy) AFURLSessionDidFinishEventsForBackgroundURLSessionBlock didFinishEventsForBackgroundURLSession AF_API_UNAVAILABLE(macos);
+@property (readwrite, nonatomic, copy) AFURLSessionDidFinishEventsForBackgroundURLSessionBlock didFinishEventsForBackgroundURLSession MSAF_API_UNAVAILABLE(macos);
 @property (readwrite, nonatomic, copy) AFURLSessionTaskWillPerformHTTPRedirectionBlock taskWillPerformHTTPRedirection;
 @property (readwrite, nonatomic, copy) AFURLSessionTaskAuthenticationChallengeBlock authenticationChallengeHandler;
 @property (readwrite, nonatomic, copy) AFURLSessionTaskNeedNewBodyStreamBlock taskNeedNewBodyStream;
 @property (readwrite, nonatomic, copy) AFURLSessionTaskDidSendBodyDataBlock taskDidSendBodyData;
 @property (readwrite, nonatomic, copy) AFURLSessionTaskDidCompleteBlock taskDidComplete;
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
-@property (readwrite, nonatomic, copy) AFURLSessionTaskDidFinishCollectingMetricsBlock taskDidFinishCollectingMetrics AF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
+@property (readwrite, nonatomic, copy) AFURLSessionTaskDidFinishCollectingMetricsBlock taskDidFinishCollectingMetrics MSAF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10));
 #endif
 @property (readwrite, nonatomic, copy) AFURLSessionDataTaskDidReceiveResponseBlock dataTaskDidReceiveResponse;
 @property (readwrite, nonatomic, copy) AFURLSessionDataTaskDidBecomeDownloadTaskBlock dataTaskDidBecomeDownloadTask;
@@ -495,16 +495,16 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
 
     self.responseSerializer = [AFJSONResponseSerializer serializer];
 
-    self.securityPolicy = [AFSecurityPolicy defaultPolicy];
+    self.securityPolicy = [MSAFSecurityPolicy defaultPolicy];
 
 #if !TARGET_OS_WATCH
-    self.reachabilityManager = [AFNetworkReachabilityManager sharedManager];
+    self.reachabilityManager = [MSAFNetworkReachabilityManager sharedManager];
 #endif
 
     self.mutableTaskDelegatesKeyedByTaskIdentifier = [[NSMutableDictionary alloc] init];
 
     self.lock = [[NSLock alloc] init];
-    self.lock.name = AFURLSessionManagerLockName;
+    self.lock.name = MSAFURLSessionManagerLockName;
 
     [self.session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         for (NSURLSessionDataTask *task in dataTasks) {
@@ -551,7 +551,7 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
     if ([task respondsToSelector:@selector(taskDescription)]) {
         if ([task.taskDescription isEqualToString:self.taskDescriptionForSessionTasks]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidResumeNotification object:task];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MSAFNetworkingTaskDidResumeNotification object:task];
             });
         }
     }
@@ -562,7 +562,7 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
     if ([task respondsToSelector:@selector(taskDescription)]) {
         if ([task.taskDescription isEqualToString:self.taskDescriptionForSessionTasks]) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:AFNetworkingTaskDidSuspendNotification object:task];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MSAFNetworkingTaskDidSuspendNotification object:task];
             });
         }
     }
@@ -710,7 +710,7 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
 
 #pragma mark -
 
-- (void)setResponseSerializer:(id <AFURLResponseSerialization>)responseSerializer {
+- (void)setResponseSerializer:(id <MSAFURLResponseSerialization>)responseSerializer {
     NSParameterAssert(responseSerializer);
 
     _responseSerializer = responseSerializer;
@@ -851,8 +851,8 @@ static NSString * const AFNSURLSessionTaskDidSuspendNotification = @"com.alamofi
     self.taskDidComplete = block;
 }
 
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
-- (void)setTaskDidFinishCollectingMetricsBlock:(void (^)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, NSURLSessionTaskMetrics * _Nullable))block AF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10)) {
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
+- (void)setTaskDidFinishCollectingMetricsBlock:(void (^)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, NSURLSessionTaskMetrics * _Nullable))block MSAF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10)) {
     self.taskDidFinishCollectingMetrics = block;
 }
 #endif
@@ -923,7 +923,7 @@ didBecomeInvalidWithError:(NSError *)error
         self.sessionDidBecomeInvalid(session, error);
     }
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:AFURLSessionDidInvalidateNotification object:session];
+    [[NSNotificationCenter defaultCenter] postNotificationName:MSAFURLSessionDidInvalidateNotification object:session];
 }
 
 - (void)URLSession:(NSURLSession *)session
@@ -1092,10 +1092,10 @@ didCompleteWithError:(NSError *)error
     }
 }
 
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
 - (void)URLSession:(NSURLSession *)session
               task:(NSURLSessionTask *)task
-didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics AF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10))
+didFinishCollectingMetrics:(NSURLSessionTaskMetrics *)metrics MSAF_API_AVAILABLE(ios(10), macosx(10.12), watchos(3), tvos(10))
 {
     AFURLSessionManagerTaskDelegate *delegate = [self delegateForTask:task];
     // Metrics may fire after URLSession:task:didCompleteWithError: is called, delegate may be nil
@@ -1195,9 +1195,9 @@ didFinishDownloadingToURL:(NSURL *)location
             NSError *error = nil;
             
             if (![[NSFileManager defaultManager] moveItemAtURL:location toURL:fileURL error:&error]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:AFURLSessionDownloadTaskDidFailToMoveFileNotification object:downloadTask userInfo:error.userInfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MSAFURLSessionDownloadTaskDidFailToMoveFileNotification object:downloadTask userInfo:error.userInfo];
             } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:AFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification object:downloadTask userInfo:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:MSAFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification object:downloadTask userInfo:nil];
             }
 
             return;

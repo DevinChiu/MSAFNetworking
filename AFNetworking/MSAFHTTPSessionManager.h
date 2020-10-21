@@ -25,7 +25,7 @@
 #endif
 #import <TargetConditionals.h>
 
-#import "AFURLSessionManager.h"
+#import "MSAFURLSessionManager.h"
 
 /**
  `AFHTTPSessionManager` is a subclass of `AFURLSessionManager` with convenience methods for making HTTP requests. When a `baseURL` is provided, requests made with the `GET` / `POST` / et al. convenience methods can be made with relative paths.
@@ -65,7 +65,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MSAFHTTPSessionManager : AFURLSessionManager <NSSecureCoding, NSCopying>
+@interface MSAFHTTPSessionManager : MSAFURLSessionManager <NSSecureCoding, NSCopying>
 
 /**
  The URL used to construct requests from relative paths in methods like `requestWithMethod:URLString:parameters:`, and the `GET` / `POST` / et al. convenience methods.
@@ -77,14 +77,14 @@ NS_ASSUME_NONNULL_BEGIN
 
  @warning `requestSerializer` must not be `nil`.
  */
-@property (nonatomic, strong) AFHTTPRequestSerializer <AFURLRequestSerialization> * requestSerializer;
+@property (nonatomic, strong) MSAFHTTPRequestSerializer <AFURLRequestSerialization> * requestSerializer;
 
 /**
  Responses sent from the server in data tasks created with `dataTaskWithRequest:success:failure:` and run using the `GET` / `POST` / et al. convenience methods are automatically validated and serialized by the response serializer. By default, this property is set to an instance of `AFJSONResponseSerializer`.
 
  @warning `responseSerializer` must not be `nil`.
  */
-@property (nonatomic, strong) AFHTTPResponseSerializer <AFURLResponseSerialization> * responseSerializer;
+@property (nonatomic, strong) MSAFHTTPResponseSerializer <MSAFURLResponseSerialization> * responseSerializer;
 
 ///-------------------------------
 /// @name Managing Security Policy
@@ -93,7 +93,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  The security policy used by created session to evaluate server trust for secure connections. `AFURLSessionManager` uses the `defaultPolicy` unless otherwise specified. A security policy configured with `AFSSLPinningModePublicKey` or `AFSSLPinningModeCertificate` can only be applied on a session manager initialized with a secure base URL (i.e. https). Applying a security policy with pinning enabled on an insecure session manager throws an `Invalid Security Policy` exception.
  */
-@property (nonatomic, strong) AFSecurityPolicy *securityPolicy;
+@property (nonatomic, strong) MSAFSecurityPolicy *securityPolicy;
 
 ///---------------------
 /// @name Initialization
@@ -201,7 +201,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSURLSessionDataTask *)POST:(NSString *)URLString
                              parameters:(nullable id)parameters
                                 headers:(nullable NSDictionary <NSString *, NSString *> *)headers
-              constructingBodyWithBlock:(nullable void (^)(id <AFMultipartFormData> formData))block
+              constructingBodyWithBlock:(nullable void (^)(id <MSAFMultipartFormData> formData))block
                                progress:(nullable void (^)(NSProgress *uploadProgress))uploadProgress
                                 success:(nullable void (^)(NSURLSessionDataTask *task, id _Nullable responseObject))success
                                 failure:(nullable void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;

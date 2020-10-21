@@ -23,7 +23,7 @@
 
 #import "AFTestCase.h"
 
-#import "AFURLSessionManager.h"
+#import "MSAFURLSessionManager.h"
 
 #ifdef __MAC_OS_X_VERSION_MIN_REQUIRED
 #define NSFoundationVersionNumber_With_Fixed_28588583_bug 0.0
@@ -33,8 +33,8 @@
 
 
 @interface AFURLSessionManagerTests : AFTestCase
-@property (readwrite, nonatomic, strong) AFURLSessionManager *localManager;
-@property (readwrite, nonatomic, strong) AFURLSessionManager *backgroundManager;
+@property (readwrite, nonatomic, strong) MSAFURLSessionManager *localManager;
+@property (readwrite, nonatomic, strong) MSAFURLSessionManager *backgroundManager;
 @end
 
 @implementation AFURLSessionManagerTests
@@ -47,7 +47,7 @@
 
 - (void)setUp {
     [super setUp];
-    self.localManager = [[AFURLSessionManager alloc] init];
+    self.localManager = [[MSAFURLSessionManager alloc] init];
     [self.localManager.session.configuration.URLCache removeAllCachedResponses];
 
     //It was discovered that background sessions were hanging the test target
@@ -60,7 +60,7 @@
     if (NSFoundationVersionNumber > NSFoundationVersionNumber_With_Fixed_28588583_bug) {
         NSString *identifier = [NSString stringWithFormat:@"com.afnetworking.tests.urlsession.%@", [[NSUUID UUID] UUIDString]];
         NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:identifier];
-        self.backgroundManager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+        self.backgroundManager = [[MSAFURLSessionManager alloc] initWithSessionConfiguration:configuration];
     }
     else {
         self.backgroundManager = nil;
@@ -134,16 +134,16 @@
 }
 
 - (void)testSessionTaskDoesReportMetrics {
-    [self expectationForNotification:AFNetworkingTaskDidCompleteNotification object:nil handler:^BOOL(NSNotification * _Nonnull notification) {
-#if AF_CAN_USE_AT_AVAILABLE && AF_CAN_INCLUDE_SESSION_TASK_METRICS
+    [self expectationForNotification:MSAFNetworkingTaskDidCompleteNotification object:nil handler:^BOOL(NSNotification * _Nonnull notification) {
+#if MSAF_CAN_USE_AT_AVAILABLE && MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
         if (@available(iOS 10, macOS 10.12, watchOS 3, tvOS 10, *)) {
-            return [notification userInfo][AFNetworkingTaskDidCompleteSessionTaskMetrics] != nil;
+            return [notification userInfo][MSAFNetworkingTaskDidCompleteSessionTaskMetrics] != nil;
         }
 #endif
         return YES;
     }];
 
-#if AF_CAN_INCLUDE_SESSION_TASK_METRICS
+#if MSAF_CAN_INCLUDE_SESSION_TASK_METRICS
     __weak XCTestExpectation *metricsBlock = [self expectationWithDescription:@"Metrics completion block is called"];
     [self.localManager setTaskDidFinishCollectingMetricsBlock:^(NSURLSession * _Nonnull session, NSURLSessionTask * _Nonnull task, NSURLSessionTaskMetrics * _Nullable metrics) {
         [metricsBlock fulfill];
@@ -455,7 +455,7 @@
             }
        completionHandler:nil];
 
-    [self expectationForNotification:AFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification
+    [self expectationForNotification:MSAFURLSessionDownloadTaskDidMoveFileSuccessfullyNotification
                               object:nil
                              handler:nil];
     [task resume];
@@ -472,7 +472,7 @@
             }
       completionHandler:nil];
 
-    [self expectationForNotification:AFURLSessionDownloadTaskDidFailToMoveFileNotification
+    [self expectationForNotification:MSAFURLSessionDownloadTaskDidFailToMoveFileNotification
                               object:nil
                              handler:nil];
     [downloadTask resume];
@@ -482,7 +482,7 @@
 #pragma mark - private
 
 - (void)_testResumeNotificationForTask:(NSURLSessionTask *)task {
-    [self expectationForNotification:AFNetworkingTaskDidResumeNotification
+    [self expectationForNotification:MSAFNetworkingTaskDidResumeNotification
                               object:nil
                              handler:nil];
     [task resume];
@@ -493,7 +493,7 @@
 }
 
 - (void)_testSuspendNotificationForTask:(NSURLSessionTask *)task {
-    [self expectationForNotification:AFNetworkingTaskDidSuspendNotification
+    [self expectationForNotification:MSAFNetworkingTaskDidSuspendNotification
                               object:nil
                              handler:nil];
     [task resume];

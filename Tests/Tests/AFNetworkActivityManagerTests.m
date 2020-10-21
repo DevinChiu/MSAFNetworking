@@ -22,11 +22,11 @@
 #import "AFTestCase.h"
 
 #import "AFNetworkActivityIndicatorManager.h"
-#import "AFHTTPSessionManager.h"
+#import "MSAFHTTPSessionManager.h"
 
 @interface AFNetworkActivityManagerTests : AFTestCase
 @property (nonatomic, strong) AFNetworkActivityIndicatorManager *networkActivityIndicatorManager;
-@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (nonatomic, strong) MSAFHTTPSessionManager *sessionManager;
 @end
 
 #pragma mark -
@@ -36,7 +36,7 @@
 - (void)setUp {
     [super setUp];
 
-    self.sessionManager = [[AFHTTPSessionManager alloc] initWithBaseURL:self.baseURL sessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    self.sessionManager = [[MSAFHTTPSessionManager alloc] initWithBaseURL:self.baseURL sessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
 
     self.networkActivityIndicatorManager = [[AFNetworkActivityIndicatorManager alloc] init];
     self.networkActivityIndicatorManager.enabled = YES;

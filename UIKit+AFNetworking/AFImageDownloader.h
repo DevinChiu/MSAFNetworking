@@ -25,7 +25,7 @@
 
 #import <Foundation/Foundation.h>
 #import "AFAutoPurgingImageCache.h"
-#import "AFHTTPSessionManager.h"
+#import "MSAFHTTPSessionManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,7 +62,7 @@ typedef NS_ENUM(NSInteger, AFImageDownloadPrioritization) {
 /**
  The `AFHTTPSessionManager` used to download images. By default, this is configured with an `AFImageResponseSerializer`, and a shared `NSURLCache` for all image downloads.
  */
-@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (nonatomic, strong) MSAFHTTPSessionManager *sessionManager;
 
 /**
  Defines the order prioritization of incoming download requests being inserted into the queue. `AFImageDownloadPrioritizationFIFO` by default.
@@ -112,7 +112,7 @@ typedef NS_ENUM(NSInteger, AFImageDownloadPrioritization) {
 
  @return The new `AFImageDownloader` instance.
  */
-- (instancetype)initWithSessionManager:(AFHTTPSessionManager *)sessionManager
+- (instancetype)initWithSessionManager:(MSAFHTTPSessionManager *)sessionManager
                 downloadPrioritization:(AFImageDownloadPrioritization)downloadPrioritization
                 maximumActiveDownloads:(NSInteger)maximumActiveDownloads
                             imageCache:(nullable id <AFImageRequestCache>)imageCache;

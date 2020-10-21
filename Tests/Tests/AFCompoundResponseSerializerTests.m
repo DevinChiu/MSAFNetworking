@@ -21,7 +21,7 @@
 
 #import <XCTest/XCTest.h>
 #import "AFTestCase.h"
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 @interface AFCompoundResponseSerializerTests : AFTestCase
 

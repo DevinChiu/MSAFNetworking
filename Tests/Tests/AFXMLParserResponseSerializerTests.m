@@ -21,8 +21,8 @@
 
 #import "AFTestCase.h"
 
-#import "AFURLRequestSerialization.h"
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLRequestSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 static NSData * AFXMLTestData() {
     return [@"<?xml version=\"1.0\" encoding=\"UTF-8\"?><foo attr1=\"1\" attr2=\"2\"><bar>someValue</bar></foo>" dataUsingEncoding:NSUTF8StringEncoding];

@@ -34,7 +34,7 @@ FOUNDATION_EXPORT id AFJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJ
 
  For example, a JSON response serializer may check for an acceptable status code (`2XX` range) and content type (`application/json`), decoding a valid JSON response into an object.
  */
-@protocol AFURLResponseSerialization <NSObject, NSSecureCoding, NSCopying>
+@protocol MSAFURLResponseSerialization <NSObject, NSSecureCoding, NSCopying>
 
 /**
  The response object decoded from the data associated with a specified response.
@@ -58,7 +58,7 @@ FOUNDATION_EXPORT id AFJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJ
 
  Any request or response serializer dealing with HTTP is encouraged to subclass `AFHTTPResponseSerializer` in order to ensure consistent default behavior.
  */
-@interface MSAFHTTPResponseSerializer : NSObject <AFURLResponseSerialization>
+@interface MSAFHTTPResponseSerializer : NSObject <MSAFURLResponseSerialization>
 
 - (instancetype)init;
 
@@ -261,14 +261,14 @@ FOUNDATION_EXPORT id AFJSONObjectByRemovingKeysWithNullValues(id JSONObject, NSJ
 /**
  The component response serializers.
  */
-@property (readonly, nonatomic, copy) NSArray <id<AFURLResponseSerialization>> *responseSerializers;
+@property (readonly, nonatomic, copy) NSArray <id<MSAFURLResponseSerialization>> *responseSerializers;
 
 /**
  Creates and returns a compound serializer comprised of the specified response serializers.
 
  @warning Each response serializer specified must be a subclass of `AFHTTPResponseSerializer`, and response to `-validateResponse:data:error:`.
  */
-+ (instancetype)compoundSerializerWithResponseSerializers:(NSArray <id<AFURLResponseSerialization>> *)responseSerializers;
++ (instancetype)compoundSerializerWithResponseSerializers:(NSArray <id<MSAFURLResponseSerialization>> *)responseSerializers;
 
 @end
 

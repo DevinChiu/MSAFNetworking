@@ -21,8 +21,8 @@
 
 #import "AFTestCase.h"
 
-#import "AFURLRequestSerialization.h"
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLRequestSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 #import <XCTest/XCTest.h>
 

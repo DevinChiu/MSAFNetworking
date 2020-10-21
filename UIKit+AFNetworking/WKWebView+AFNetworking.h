@@ -30,14 +30,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class AFHTTPSessionManager;
+@class MSAFHTTPSessionManager;
 
 @interface WKWebView (AFNetworking)
 
 /**
  The session manager used to download all request
  */
-@property (nonatomic, strong) AFHTTPSessionManager *sessionManager;
+@property (nonatomic, strong) MSAFHTTPSessionManager *sessionManager;
 
 /**
  Asynchronously loads the specified request.

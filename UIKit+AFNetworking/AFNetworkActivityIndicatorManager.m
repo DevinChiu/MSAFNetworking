@@ -22,7 +22,7 @@
 #import "AFNetworkActivityIndicatorManager.h"
 
 #if TARGET_OS_IOS
-#import "AFURLSessionManager.h"
+#import "MSAFURLSessionManager.h"
 
 typedef NS_ENUM(NSInteger, AFNetworkActivityManagerState) {
     AFNetworkActivityManagerStateNotActive,
@@ -74,9 +74,9 @@ typedef void (^AFNetworkActivityActionBlock)(BOOL networkActivityIndicatorVisibl
         return nil;
     }
     self.currentState = AFNetworkActivityManagerStateNotActive;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkRequestDidStart:) name:AFNetworkingTaskDidResumeNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkRequestDidFinish:) name:AFNetworkingTaskDidSuspendNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkRequestDidFinish:) name:AFNetworkingTaskDidCompleteNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkRequestDidStart:) name:MSAFNetworkingTaskDidResumeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkRequestDidFinish:) name:MSAFNetworkingTaskDidSuspendNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkRequestDidFinish:) name:MSAFNetworkingTaskDidCompleteNotification object:nil];
     self.activationDelay = kDefaultAFNetworkActivityManagerActivationDelay;
     self.completionDelay = kDefaultAFNetworkActivityManagerCompletionDelay;
 

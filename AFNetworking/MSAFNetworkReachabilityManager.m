@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFNetworkReachabilityManager.h"
+#import "MSAFNetworkReachabilityManager.h"
 #if !TARGET_OS_WATCH
 
 #import <netinet/in.h>
@@ -32,7 +32,7 @@ NSString * const MSAFNetworkingReachabilityDidChangeNotification = @"com.msxf.ne
 NSString * const MSAFNetworkingReachabilityNotificationStatusItem = @"MSAFNetworkingReachabilityNotificationStatusItem";
 
 typedef void (^AFNetworkReachabilityStatusBlock)(AFNetworkReachabilityStatus status);
-typedef AFNetworkReachabilityManager * (^AFNetworkReachabilityStatusCallback)(AFNetworkReachabilityStatus status);
+typedef MSAFNetworkReachabilityManager * (^AFNetworkReachabilityStatusCallback)(AFNetworkReachabilityStatus status);
 
 NSString * MSAFStringFromNetworkReachabilityStatus(AFNetworkReachabilityStatus status) {
     switch (status) {
@@ -82,7 +82,7 @@ static AFNetworkReachabilityStatus MSAFNetworkReachabilityStatusForFlags(SCNetwo
 static void MSAFPostReachabilityStatusChange(SCNetworkReachabilityFlags flags, AFNetworkReachabilityStatusCallback block) {
     AFNetworkReachabilityStatus status = MSAFNetworkReachabilityStatusForFlags(flags);
     dispatch_async(dispatch_get_main_queue(), ^{
-        AFNetworkReachabilityManager *manager = nil;
+        MSAFNetworkReachabilityManager *manager = nil;
         if (block) {
             manager = block(status);
         }
@@ -107,16 +107,16 @@ static void MSAFNetworkReachabilityReleaseCallback(const void *info) {
     }
 }
 
-@interface AFNetworkReachabilityManager ()
+@interface MSAFNetworkReachabilityManager ()
 @property (readonly, nonatomic, assign) SCNetworkReachabilityRef networkReachability;
 @property (readwrite, nonatomic, assign) AFNetworkReachabilityStatus networkReachabilityStatus;
 @property (readwrite, nonatomic, copy) AFNetworkReachabilityStatusBlock networkReachabilityStatusBlock;
 @end
 
-@implementation AFNetworkReachabilityManager
+@implementation MSAFNetworkReachabilityManager
 
 + (instancetype)sharedManager {
-    static AFNetworkReachabilityManager *_sharedManager = nil;
+    static MSAFNetworkReachabilityManager *_sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedManager = [self manager];
@@ -128,7 +128,7 @@ static void MSAFNetworkReachabilityReleaseCallback(const void *info) {
 + (instancetype)managerForDomain:(NSString *)domain {
     SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(kCFAllocatorDefault, [domain UTF8String]);
 
-    AFNetworkReachabilityManager *manager = [[self alloc] initWithReachability:reachability];
+    MSAFNetworkReachabilityManager *manager = [[self alloc] initWithReachability:reachability];
     
     CFRelease(reachability);
 
@@ -137,7 +137,7 @@ static void MSAFNetworkReachabilityReleaseCallback(const void *info) {
 
 + (instancetype)managerForAddress:(const void *)address {
     SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, (const struct sockaddr *)address);
-    AFNetworkReachabilityManager *manager = [[self alloc] initWithReachability:reachability];
+    MSAFNetworkReachabilityManager *manager = [[self alloc] initWithReachability:reachability];
 
     CFRelease(reachability);
     

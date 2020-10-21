@@ -23,7 +23,7 @@
 #import <Foundation/Foundation.h>
 @import AFNetworking;
 
-@interface AFAppDotNetAPIClient : AFHTTPSessionManager
+@interface AFAppDotNetAPIClient : MSAFHTTPSessionManager
 
 + (instancetype)sharedClient;
 

@@ -21,13 +21,13 @@
 
 #import "AFTestCase.h"
 
-#import "AFURLRequestSerialization.h"
+#import "MSAFURLRequestSerialization.h"
 
 @interface AFMultipartBodyStream : NSInputStream <NSStreamDelegate>
 @property (readwrite, nonatomic, strong) NSMutableArray *HTTPBodyParts;
 @end
 
-@protocol AFMultipartFormDataTest <AFMultipartFormData>
+@protocol AFMultipartFormDataTest <MSAFMultipartFormData>
 @property (readwrite, nonatomic, strong) AFMultipartBodyStream *bodyStream;
 
 - (instancetype)initWithURLRequest:(NSMutableURLRequest *)urlRequest
@@ -53,14 +53,14 @@
 #pragma mark -
 
 @interface AFHTTPRequestSerializationTests : AFTestCase
-@property (nonatomic, strong) AFHTTPRequestSerializer *requestSerializer;
+@property (nonatomic, strong) MSAFHTTPRequestSerializer *requestSerializer;
 @end
 
 @implementation AFHTTPRequestSerializationTests
 
 - (void)setUp {
     [super setUp];
-    self.requestSerializer = [AFHTTPRequestSerializer serializer];
+    self.requestSerializer = [MSAFHTTPRequestSerializer serializer];
 }
 
 #pragma mark -
@@ -164,7 +164,7 @@
 }
 
 - (void)testQueryStringSerializationCanFailWithError {
-    AFHTTPRequestSerializer *serializer = [AFHTTPRequestSerializer serializer];
+    MSAFHTTPRequestSerializer *serializer = [MSAFHTTPRequestSerializer serializer];
 
     NSError *serializerError = [NSError errorWithDomain:@"TestDomain" code:0 userInfo:nil];
 
@@ -182,7 +182,7 @@
 }
 
 - (void)testThatHTTPHeaderValueCanBeRemoved {
-    AFHTTPRequestSerializer *serializer = [AFHTTPRequestSerializer serializer];
+    MSAFHTTPRequestSerializer *serializer = [MSAFHTTPRequestSerializer serializer];
     NSString *headerField = @"TestHeader";
     NSString *headerValue = @"test";
     [serializer setValue:headerValue forHTTPHeaderField:headerField];
@@ -233,7 +233,7 @@
         [parameter appendString:@"👴🏿👷🏻👮🏽"];
     }
 
-    AFHTTPRequestSerializer *serializer = [AFHTTPRequestSerializer serializer];
+    MSAFHTTPRequestSerializer *serializer = [MSAFHTTPRequestSerializer serializer];
     NSURLRequest *request = [serializer requestWithMethod:@"GET"
                                                 URLString:@"http://test.com"
                                                parameters:@{@"test":parameter}

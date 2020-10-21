@@ -19,7 +19,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFURLResponseSerialization.h"
+#import "MSAFURLResponseSerialization.h"
 
 #import <TargetConditionals.h>
 
@@ -781,7 +781,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
                            data:(NSData *)data
                           error:(NSError *__autoreleasing *)error
 {
-    for (id <AFURLResponseSerialization> serializer in self.responseSerializers) {
+    for (id <MSAFURLResponseSerialization> serializer in self.responseSerializers) {
         if (![serializer isKindOfClass:[MSAFHTTPResponseSerializer class]]) {
             continue;
         }
@@ -812,7 +812,7 @@ static UIImage * AFInflatedImageFromResponseWithDataAtScale(NSHTTPURLResponse *r
         return nil;
     }
 
-    NSSet *classes = [NSSet setWithArray:@[[NSArray class], [MSAFHTTPResponseSerializer <AFURLResponseSerialization> class]]];
+    NSSet *classes = [NSSet setWithArray:@[[NSArray class], [MSAFHTTPResponseSerializer <MSAFURLResponseSerialization> class]]];
     self.responseSerializers = [decoder decodeObjectOfClasses:classes forKey:NSStringFromSelector(@selector(responseSerializers))];
 
     return self;

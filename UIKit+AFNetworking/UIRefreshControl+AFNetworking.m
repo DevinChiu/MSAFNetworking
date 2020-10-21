@@ -25,7 +25,7 @@
 
 #if TARGET_OS_IOS
 
-#import "AFURLSessionManager.h"
+#import "MSAFURLSessionManager.h"
 
 @interface AFRefreshControlNotificationObserver : NSObject
 @property (readonly, nonatomic, weak) UIRefreshControl *refreshControl;
@@ -66,18 +66,18 @@
 - (void)setRefreshingWithStateOfTask:(NSURLSessionTask *)task {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 
-    [notificationCenter removeObserver:self name:AFNetworkingTaskDidResumeNotification object:nil];
-    [notificationCenter removeObserver:self name:AFNetworkingTaskDidSuspendNotification object:nil];
-    [notificationCenter removeObserver:self name:AFNetworkingTaskDidCompleteNotification object:nil];
+    [notificationCenter removeObserver:self name:MSAFNetworkingTaskDidResumeNotification object:nil];
+    [notificationCenter removeObserver:self name:MSAFNetworkingTaskDidSuspendNotification object:nil];
+    [notificationCenter removeObserver:self name:MSAFNetworkingTaskDidCompleteNotification object:nil];
 
     if (task) {
         UIRefreshControl *refreshControl = self.refreshControl;
         if (task.state == NSURLSessionTaskStateRunning) {
             [refreshControl beginRefreshing];
 
-            [notificationCenter addObserver:self selector:@selector(af_beginRefreshing) name:AFNetworkingTaskDidResumeNotification object:task];
-            [notificationCenter addObserver:self selector:@selector(af_endRefreshing) name:AFNetworkingTaskDidCompleteNotification object:task];
-            [notificationCenter addObserver:self selector:@selector(af_endRefreshing) name:AFNetworkingTaskDidSuspendNotification object:task];
+            [notificationCenter addObserver:self selector:@selector(af_beginRefreshing) name:MSAFNetworkingTaskDidResumeNotification object:task];
+            [notificationCenter addObserver:self selector:@selector(af_endRefreshing) name:MSAFNetworkingTaskDidCompleteNotification object:task];
+            [notificationCenter addObserver:self selector:@selector(af_endRefreshing) name:MSAFNetworkingTaskDidSuspendNotification object:task];
         } else {
             [refreshControl endRefreshing];
         }
@@ -103,9 +103,9 @@
 - (void)dealloc {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     
-    [notificationCenter removeObserver:self name:AFNetworkingTaskDidCompleteNotification object:nil];
-    [notificationCenter removeObserver:self name:AFNetworkingTaskDidResumeNotification object:nil];
-    [notificationCenter removeObserver:self name:AFNetworkingTaskDidSuspendNotification object:nil];
+    [notificationCenter removeObserver:self name:MSAFNetworkingTaskDidCompleteNotification object:nil];
+    [notificationCenter removeObserver:self name:MSAFNetworkingTaskDidResumeNotification object:nil];
+    [notificationCenter removeObserver:self name:MSAFNetworkingTaskDidSuspendNotification object:nil];
 }
 
 @end
